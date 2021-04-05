@@ -1,3 +1,4 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 
 class IconColors {
@@ -23,10 +24,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme:
           ThemeData(backgroundColor: Color(0xffe7e9f0), fontFamily: 'Raleway'),
-      home: Wallet(title: "My Wallet"),
+      home: Wallet(title: "محفظتي"),
     );
   }
 }
@@ -43,7 +45,10 @@ class MyCards extends StatefulWidget {
 class _MyCardsPageState extends State<MyCards> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Directionality(
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
+
       backgroundColor: Color(0xffdee4eb),
       appBar: AppBar(
         title: Text(
@@ -141,7 +146,7 @@ class _MyCardsPageState extends State<MyCards> {
                           radius: 20,
                         ),
                         title: Text(
-                          "ATM CARDLESS",
+                          "Show",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         enabled: true,
@@ -200,7 +205,7 @@ class _MyCardsPageState extends State<MyCards> {
           ],
         ),
       ),
-    );
+    ), );
   }
 }
 
@@ -245,21 +250,6 @@ class _MyHomePageState extends State<Wallet> {
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      width: 10,
-                      height: 10,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
-                  Icon(
-                    Icons.notifications,
-                    color: Colors.black54,
-                  ),
                 ],
               ),
             ),
@@ -291,46 +281,31 @@ class _MyHomePageState extends State<Wallet> {
                   color: Colors.transparent,
                   child: InkWell(
                     child: CreditCardContainer(),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) {
-                            return MyCards(title: "My Cards");
-                          },
-                        ),
-                      );
-                    },
+                    onTap: () { },
                   ),
                 ),
               ),
             ),
             CustomContainer(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   CustomIconButton(
                     circleColor: IconColors.send,
                     buttonImg: "assets/imgs/send.png",
-                    buttonTitle: "SEND",
-                    onTap: () {},
+                    buttonTitle: "سدد",
+                    onTap: () { _sadadModalBottomSheet(context); },
                   ),
                   CustomIconButton(
                     circleColor: IconColors.transfer,
                     buttonImg: "assets/imgs/transfer.png",
-                    buttonTitle: "TRANSFER",
+                    buttonTitle: "حول",
                     onTap: () {},
                   ),
                   CustomIconButton(
                     circleColor: IconColors.passbook,
                     buttonImg: "assets/imgs/passbook.png",
-                    buttonTitle: "PASSBOOK",
-                    onTap: () {},
-                  ),
-                  CustomIconButton(
-                    circleColor: IconColors.more,
-                    buttonImg: "assets/imgs/more.png",
-                    buttonTitle: "MORE",
+                    buttonTitle: "بار كود",
                     onTap: () {},
                   ),
                 ],
@@ -343,11 +318,11 @@ class _MyHomePageState extends State<Wallet> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        "Transactions",
+                        "تحويلات السابقة",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       CustomRoundedButton(
-                        buttonText: "More",
+                        buttonText: "المزيد",
                         color: Colors.blue,
                         onTap: () {},
                       ),
@@ -365,24 +340,24 @@ class _MyHomePageState extends State<Wallet> {
                         onTap: () {},
                         transactionAmount: "+\$210.00",
                         transactionIcon: IconImgs.transfer,
-                        transactionName: "Amazigh Halzoun",
-                        transactionType: "TRANSFER",
+                        transactionName: "تموينات الديره",
+                        transactionType: "سداد",
                       ),
                       HistoryListTile(
                         iconColor: IconColors.transfer,
                         onTap: () {},
                         transactionAmount: "-\$310.00",
                         transactionIcon: IconImgs.transfer,
-                        transactionName: "Cybdom Tech",
-                        transactionType: "TRANSFER",
+                        transactionName: "تموينات زين",
+                        transactionType: "سداد",
                       ),
                       HistoryListTile(
                         iconColor: IconColors.send,
                         onTap: () {},
                         transactionAmount: "-\$210.00",
                         transactionIcon: IconImgs.send,
-                        transactionName: "Wife",
-                        transactionType: "SEND",
+                        transactionName: "إبني فهد",
+                        transactionType: "تحويل",
                       ),
                     ],
                   ),
@@ -507,7 +482,7 @@ class CustomIconButton extends StatelessWidget {
               Text(
                 buttonTitle,
                 overflow: TextOverflow.clip,
-                style: TextStyle(),
+                style: TextStyle(fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -565,7 +540,7 @@ class CreditCardContainer extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     Text(
-                      "VALID FROM: ",
+                      "صالحه من",
                       style: TextStyle(color: Colors.white, fontSize: 11.0),
                     ),
                     Text(
@@ -580,7 +555,7 @@ class CreditCardContainer extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     Text(
-                      "VALID THRU: ",
+                      "الى",
                       style: TextStyle(color: Colors.white, fontSize: 11.0),
                     ),
                     Text(
@@ -595,7 +570,7 @@ class CreditCardContainer extends StatelessWidget {
               height: 11,
             ),
             Text(
-              "AMAZIGH HALZOUN",
+              "عمر الهوساوي",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 19,
@@ -606,6 +581,144 @@ class CreditCardContainer extends StatelessWidget {
       ),
     );
   }
+}
+
+void _sadadModalBottomSheet(context){
+  showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+          borderRadius:  BorderRadius.only(topLeft: Radius.circular(35), topRight: Radius.circular(41),)
+      ),
+      backgroundColor: Colors.white,
+      builder: (BuildContext bc){
+        return Container(
+          padding: EdgeInsets.only(top:10),
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                  leading: new Icon(Icons.local_grocery_store, color: Color(0xff67A3D9),),
+                  title: new Text('سداد مباشر'),
+                  onTap: () { _storesListModalBottomSheet(context); }
+              ),
+              ListTile(
+                  leading: new Icon(Icons.local_grocery_store, color: Color(0xff0671B7),),
+                  title: new Text('سداد خلال 3 أشهر'),
+                  onTap: () { _storesListModalBottomSheet(context); }
+              ),
+              ListTile(
+                  leading: new Icon(Icons.local_grocery_store, color: Color(0xfff678a7),),
+                  title: new Text('سداد خلال 6 أشهر'),
+                  onTap: () { _storesListModalBottomSheet(context); }
+              ),
+              ListTile(
+                  leading: new Icon(Icons.local_grocery_store, color: Color(0xffe64072),),
+                  title: new Text('سداد خلال سنة'),
+                  onTap: () { _storesListModalBottomSheet(context); }
+              ),
+            ],
+          ),
+        );
+      }
+  );
+}
+
+
+void _storesListModalBottomSheet(context){
+  showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+          borderRadius:  BorderRadius.only(topLeft: Radius.circular(35), topRight: Radius.circular(41),)
+      ),
+      backgroundColor: Colors.white,
+      builder: (BuildContext bc){
+        return Container(
+          padding: EdgeInsets.only(top:10),
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                  leading: new Icon(Icons.credit_card, color: Color(0xff0671B7),),
+                  title: new Text('تموينات فيصل للمواد الغذائية'),
+                  onTap: () { _submitOrderListModalBottomSheet(context); },
+                  trailing: Text("0.3 km", style: TextStyle(fontSize: 12.0, color: Colors.grey))
+              ),
+              ListTile(
+                  leading: new Icon(Icons.credit_card, color: Color(0xff0671B7),),
+                  title: new Text('تموينات خالد للمواد الغذائية'),
+                  onTap: () { _submitOrderListModalBottomSheet(context); },
+                  trailing: Text("0.9 km", style: TextStyle(fontSize: 12.0, color: Colors.grey))
+        ),
+              ListTile(
+                  leading: new Icon(Icons.credit_card, color: Color(0xff0671B7),),
+                  title: new Text('تموينات نورة للمواد الغذائية'),
+                  onTap: () { _submitOrderListModalBottomSheet(context); },
+                  trailing: Text("1.2 km", style: TextStyle(fontSize: 12.0, color: Colors.grey))
+              ),
+              ListTile(
+                  leading: new Icon(Icons.credit_card, color: Color(0xff0671B7),),
+                  title: new Text('تموينات النور للمواد الغذائية'),
+                  onTap: () { _submitOrderListModalBottomSheet(context); },
+                  trailing: Text("1.3 km", style: TextStyle(fontSize: 12.0, color: Colors.grey))
+              ),
+              ListTile(
+                  leading: new Icon(Icons.credit_card, color: Color(0xff0671B7),),
+                  title: new Text('تموينات أبو فهد للمواد الغذائية'),
+                  onTap: () { _submitOrderListModalBottomSheet(context); },
+                  trailing: Text("1.7 km", style: TextStyle(fontSize: 12.0, color: Colors.grey))
+              ),
+              ListTile(
+                  leading: new Icon(Icons.credit_card, color: Color(0xff0671B7),),
+                  title: new Text('تموينات مكة للمواد الغذائية'),
+                  onTap: () { _submitOrderListModalBottomSheet(context); },
+                  trailing: Text("2.3 km", style: TextStyle(fontSize: 12.0, color: Colors.grey))
+              ),
+            ],
+          ),
+        );
+      }
+  );
+}
+
+void _submitOrderListModalBottomSheet(context){
+  showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+          borderRadius:  BorderRadius.only(topLeft: Radius.circular(35), topRight: Radius.circular(41),)
+      ),
+      backgroundColor: Colors.white,
+      builder: (BuildContext bc){
+        return Container(
+          padding: EdgeInsets.all(20),
+          child: Wrap(
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(
+
+                  hintText: 'ادخل طلباتك'
+                ),
+              ),
+              SizedBox(height: 100),
+              SizedBox(
+                width: double.infinity, // <-- Your width
+                  child: RaisedButton(
+                    onPressed: () {
+                      CoolAlert.show(
+                        context: context,
+                        type: CoolAlertType.success,
+                        title: "تم إرسال طلبك بنجاح",
+                      );
+                    },
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+                    padding: const EdgeInsets.all(0.0),
+                    color: Color(0xff3CA2C8),
+                    child: Text("إرسل", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  )
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height / 2),
+            ],
+          ),
+        );
+      }
+  );
 }
 
 class CustomContainer extends StatelessWidget {
